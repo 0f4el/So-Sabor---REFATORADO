@@ -23,6 +23,7 @@ class Marmita(db.Model):
     descricao = db.Column(db.Text, nullable=False)
     imagem = db.Column(db.String(255), nullable=False)
     categoria = db.Column(db.String(30), nullable=False, default="outros", index=True)
+    estoque = db.Column(db.Integer, nullable=False, default=10)
     disponivel = db.Column(db.Boolean, nullable=False, default=True, index=True)
     criado_em = db.Column(db.DateTime(timezone=True), nullable=False, default=agora_utc)
     atualizado_em = db.Column(
@@ -41,7 +42,8 @@ class Marmita(db.Model):
             "descricao": self.descricao,
             "imagem": url_for("static", filename=self.imagem),
             "categoria": self.categoria,
-            "disponivel": bool(self.disponivel),
+            "estoque": int(self.estoque) if self.estoque is not None else 0,
+            "disponivel": bool(self.disponivel and (self.estoque is None or self.estoque > 0)),
             "criado_em": self.criado_em.isoformat() if self.criado_em else None,
             "atualizado_em": self.atualizado_em.isoformat() if self.atualizado_em else None,
         }

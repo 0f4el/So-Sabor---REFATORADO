@@ -279,6 +279,20 @@
       color: var(--error-text);
     }
 
+    .badge-stock {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .badge-stock-zero {
+      background: #fee2e2;
+      color: #b91c1c;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
     .badge-category {
       background: var(--gray-200);
       color: var(--gray-700);
@@ -519,13 +533,16 @@
         <div class="product-content">
           <div class="product-header">
             <h3 class="product-title">{{ m.nome }}</h3>
-            <span class="badge {% if m.disponivel %}badge-available{% else %}badge-unavailable{% endif %}">
-              {% if m.disponivel %}Ativo{% else %}Inativo{% endif %}
+            <span class="badge {% if m.disponivel and m.estoque > 0 %}badge-available{% else %}badge-unavailable{% endif %}">
+              {% if m.disponivel and m.estoque > 0 %}Ativo{% else %}Indisponível{% endif %}
             </span>
           </div>
           <p class="product-description">{{ m.descricao }}</p>
-          <div class="product-meta">
+          <div class="product-meta" style="display: flex; gap: 8px; align-items: center; margin-top: 8px;">
             <span class="badge badge-category">{{ dict(frango='Frango', carne='Carne', porco='Porco', peixe='Peixe', lowcarb='Low Carb', outros='Outros')[m.categoria] }}</span>
+            <span class="badge {% if m.estoque > 0 %}badge-stock{% else %}badge-stock-zero{% endif %}">
+              📦 Estoque: {{ m.estoque }}
+            </span>
           </div>
           <div class="product-actions">
             <a href="{{ url_for('editar_marmita', marmita_id=m.id) }}" class="btn btn-secondary btn-small">✏️ Editar</a>
@@ -587,6 +604,16 @@
           </div>
 
           <div class="form-group">
+            <label for="estoque">Estoque (quantidade disponível) *</label>
+            <input type="number" id="estoque" name="estoque" min="0" step="1" required
+              value="{{ form_data.get('estoque', '') if form_data else (editar.estoque if editar else '10') }}"
+              placeholder="Ex: 15" oninput="atualizarAvisoEstoque(this.value)">
+            <small id="estoque-aviso" style="display: block; margin-top: 4px; color: var(--gray-500);">
+              Ao zerar o estoque (0), a marmita fica automaticamente indisponível para pedidos.
+            </small>
+          </div>
+
+          <div class="form-group">
             <label for="imagem">Imagem da Marmita {% if not editar %}*{% endif %}</label>
             <input type="file" id="imagem" name="imagem" accept=".jpg,.jpeg,.png,.webp,.gif"
               {% if not editar %}required{% endif %} onchange="previewImagem(event)">
@@ -640,6 +667,24 @@
         reader.readAsDataURL(file);
       } else {
         preview.classList.remove('active');
+      }
+    }
+
+    function atualizarAvisoEstoque(val) {
+      const chk = document.getElementById('disponivel');
+      const aviso = document.getElementById('estoque-aviso');
+      const num = parseInt(val, 10);
+      if (num === 0) {
+        if (chk) chk.checked = false;
+        if (aviso) {
+          aviso.textContent = '⚠️ Estoque zerado: a marmita será marcada como indisponível automaticamente.';
+          aviso.style.color = '#b91c1c';
+        }
+      } else {
+        if (aviso) {
+          aviso.textContent = 'Ao zerar o estoque (0), a marmita fica automaticamente indisponível para pedidos.';
+          aviso.style.color = 'var(--gray-500)';
+        }
       }
     }
 

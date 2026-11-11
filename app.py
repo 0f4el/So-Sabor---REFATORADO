@@ -128,6 +128,7 @@ def validate_marmita_form(form):
     nome = (form.get("nome") or "").strip()
     descricao = (form.get("descricao") or "").strip()
     categoria = (form.get("categoria") or "outros").strip().lower()
+    raw_estoque = form.get("estoque")
 
     if not 2 <= len(nome) <= 120:
         raise ValueError("O nome deve ter entre 2 e 120 caracteres.")
@@ -135,7 +136,15 @@ def validate_marmita_form(form):
         raise ValueError("A descrição deve ter entre 3 e 2.000 caracteres.")
     if categoria not in CATEGORIES:
         raise ValueError("Selecione uma categoria válida.")
-    return nome, descricao, categoria
+
+    try:
+        estoque = int(raw_estoque) if raw_estoque is not None and str(raw_estoque).strip() != "" else 0
+        if estoque < 0:
+            raise ValueError("O estoque não pode ser negativo.")
+    except (ValueError, TypeError):
+        raise ValueError("Informe um valor numérico válido para o estoque.")
+
+    return nome, descricao, categoria, estoque
 
 
 def csrf_token():
@@ -202,12 +211,18 @@ def health():
 
 @app.get("/api/init-db")
 def init_db_manual():
-    """Rota utilitária para testar e forçar a criação das tabelas caso falhe no startup."""
+    """Rota utilitária para testar, atualizar colunas e forçar a criação das tabelas."""
     try:
         db.create_all()
+        # Adiciona coluna estoque se a tabela já existia sem ela
+        with db.engine.connect() as conn:
+            conn.execute(db.text("ALTER TABLE marmitas ADD COLUMN IF NOT EXISTS estoque INTEGER DEFAULT 10;"))
+            conn.execute(db.text("UPDATE marmitas SET disponivel = FALSE WHERE estoque <= 0;"))
+            conn.commit()
+
         seed_catalog()
         total = Marmita.query.count()
-        return jsonify({"status": "sucesso", "mensagem": "Tabelas criadas com sucesso!", "total_marmitas": total})
+        return jsonify({"status": "sucesso", "mensagem": "Tabelas e coluna de estoque verificadas com sucesso!", "total_marmitas": total})
     except Exception as e:
         import traceback
         return jsonify({"status": "erro", "detalhes": str(e), "traceback": traceback.format_exc()}), 500
@@ -263,10 +278,14 @@ def criar_marmita():
 
     image_path = None
     try:
-        nome, descricao, categoria = validate_marmita_form(request.form)
+        nome, descricao, categoria, estoque = validate_marmita_form(request.form)
         image_path = save_image(request.files.get("imagem"))
         if not image_path:
             raise ValueError("Selecione uma imagem para a marmita.")
+
+        # Se estoque for 0, marca automaticamente como indisponível
+        disponivel_marcado = request.form.get("disponivel") == "on"
+        disponivel_final = disponivel_marcado and (estoque > 0)
 
         db.session.add(
             Marmita(
@@ -275,7 +294,8 @@ def criar_marmita():
                 descricao=descricao,
                 imagem=image_path,
                 categoria=categoria,
-                disponivel=request.form.get("disponivel") == "on",
+                estoque=estoque,
+                disponivel=disponivel_final,
             )
         )
         db.session.commit()
@@ -301,7 +321,7 @@ def atualizar_marmita(marmita_id):
     marmita = db.get_or_404(Marmita, marmita_id)
     new_image = None
     try:
-        nome, descricao, categoria = validate_marmita_form(request.form)
+        nome, descricao, categoria, estoque = validate_marmita_form(request.form)
         new_image = save_image(request.files.get("imagem"))
         old_image = marmita.imagem
 
@@ -309,7 +329,12 @@ def atualizar_marmita(marmita_id):
         marmita.slug = unique_slug(nome, current_id=marmita.id)
         marmita.descricao = descricao
         marmita.categoria = categoria
-        marmita.disponivel = request.form.get("disponivel") == "on"
+        marmita.estoque = estoque
+        
+        # Se estoque for 0, fica indisponível automaticamente
+        disponivel_marcado = request.form.get("disponivel") == "on"
+        marmita.disponivel = disponivel_marcado and (estoque > 0)
+
         if new_image:
             marmita.imagem = new_image
 
