@@ -387,14 +387,26 @@ def seed_catalog():
     db.session.commit()
 
 
+def migrar_colunas():
+    """Garante que novas colunas adicionadas ao modelo existam no banco sem depender de rota manual."""
+    try:
+        with db.engine.connect() as conn:
+            conn.execute(db.text("ALTER TABLE marmitas ADD COLUMN IF NOT EXISTS estoque INTEGER DEFAULT 10;"))
+            conn.execute(db.text("UPDATE marmitas SET disponivel = FALSE WHERE estoque <= 0;"))
+            conn.commit()
+    except Exception as e:
+        import logging
+        logging.warning(f"Aviso na migração automática de colunas: {e}")
+
+
 try:
     with app.app_context():
         db.create_all()
+        migrar_colunas()
         seed_catalog()
 except Exception as e:
     import logging
     logging.exception(f"Erro ao inicializar o banco de dados: {e}")
-    # Não derruba o app imediatamente caso o banco esteja indisponível temporariamente
 
 
 
