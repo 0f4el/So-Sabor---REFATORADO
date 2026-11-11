@@ -41,7 +41,16 @@ DATABASE_URL = os.getenv(
 )
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+# Garante compatibilidade caso a URL venha sem especificar o driver
+if DATABASE_URL.startswith("postgresql://") and not DATABASE_URL.startswith("postgresql+"):
+    # SQLAlchemy usará psycopg2 ou psycopg instalado
+    pass
+
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_pre_ping": True,
+    "pool_recycle": 300,
+}
 
 # Em produção, defina ADMIN_PASSWORD como senha forte ou hash Werkzeug no .env.
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "sosaboradmin")
@@ -339,9 +348,15 @@ def seed_catalog():
     db.session.commit()
 
 
-with app.app_context():
-    db.create_all()
-    seed_catalog()
+try:
+    with app.app_context():
+        db.create_all()
+        seed_catalog()
+except Exception as e:
+    import logging
+    logging.exception(f"Erro ao inicializar o banco de dados: {e}")
+    # Não derruba o app imediatamente caso o banco esteja indisponível temporariamente
+
 
 
 if __name__ == "__main__":
