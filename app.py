@@ -200,6 +200,20 @@ def health():
     return jsonify({"status": "ok", "app": "Só Sabor"})
 
 
+@app.get("/api/init-db")
+def init_db_manual():
+    """Rota utilitária para testar e forçar a criação das tabelas caso falhe no startup."""
+    try:
+        db.create_all()
+        seed_catalog()
+        total = Marmita.query.count()
+        return jsonify({"status": "sucesso", "mensagem": "Tabelas criadas com sucesso!", "total_marmitas": total})
+    except Exception as e:
+        import traceback
+        return jsonify({"status": "erro", "detalhes": str(e), "traceback": traceback.format_exc()}), 500
+
+
+
 @app.get("/api/marmitas")
 def listar_marmitas_api():
     marmitas = Marmita.query.filter_by(disponivel=True).order_by(Marmita.nome.asc()).all()
