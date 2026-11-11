@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Só Sabor - Marmitas congeladas caseiras. Prontas em 7 minutos. Entrega em Belo Horizonte.">
+  <title>Só Sabor — Marmitas Congeladas Caseiras</title>
+
+  <!-- ==========================================================
+       FONTES — Playfair Display (títulos rústicos) + Inter (corpo)
+       Troque por outras fontes do Google Fonts se quiser.
+  =========================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Folhas de estilo — separadas por tema para facilitar edição -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=3">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}?v=3">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}?v=3">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}?v=3">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/extras.css') }}?v=3">
+</head>
+<body>
+
+  <!-- ==========================================================
+       HEADER — Navegação fixa no topo
+  =========================================================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a href="#topo" class="logo-wrap" aria-label="Só Sabor - Início">
+        <!-- Logo textual. Para usar imagem, substitua o <span> por <img src="images/logo.png" alt="Só Sabor"> -->
+        <span class="logo-badge">
+          <span class="logo-so">Só</span>
+          <span class="logo-sabor">Sabor</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Principal">
+        <a href="#combos">Combos</a>
+        <a href="#monte">Monte seu combo</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#pagamento">Pagamento</a>
+      </nav>
+
+      <button class="cart-trigger" id="cartTrigger" aria-label="Abrir carrinho">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <path d="M3 6h18"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================
+       HERO — Abertura com ofertas e benefícios
+  =========================================================== -->
+  <section class="hero" id="topo">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container hero-inner">
+
+      <div class="hero-content">
+        <span class="hero-tag">· Marmitas congeladas caseiras ·</span>
+        <h1 class="hero-title">
+          Comida de casa, <span class="accent">pronta em 7 minutos</span>.
+        </h1>
+        <p class="hero-sub">
+          Combos a partir de <strong>R$ 13,00 por marmita</strong>. Variedade, praticidade e aquele sabor caseiro que você sente falta — direto do freezer pra mesa.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#combos" class="btn btn-primary">Ver combos</a>
+          <a href="#monte" class="btn btn-ghost">Montar meu combo →</a>
+        </div>
+
+        <!-- Mini-benefícios em linha -->
+        <ul class="hero-bullets">
+          <li><strong>7 min</strong> no microondas</li>
+          <li><strong>~R$14</strong> por marmita</li>
+          <li><strong>+15</strong> sabores</li>
+          <li><strong>Pix</strong> na entrega</li>
+        </ul>
+
+        <div style="margin-top: 15px; display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.12); padding: 8px 14px; rounded-radius: 20px; border-radius: 30px; font-size: 0.85rem; color: var(--color-text, #333);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span>Marmitas: <strong>350g a 450g</strong> · Embalagem de <strong>500 ml</strong></span>
+        </div>
+      </div>
+
+      <!-- Card de destaque da oferta — visual de etiqueta rústica -->
+      <aside class="hero-offer" aria-label="Oferta em destaque">
+        <div class="offer-card">
+          <div class="offer-ribbon">Combo Completo</div>
+          <div class="offer-meta">20 marmitas · mix de carne, frango e porco</div>
+          <div class="offer-price">
+            <span class="price-from">De R$ 380</span>
+            <span class="price-big">R$ 260</span>
+            <span class="price-unit">≈ R$ 13 por marmita</span>
+          </div>
+          <a href="#combos" class="btn btn-primary btn-block" data-action="add-combo" data-combo-id="combo-20-mix">Quero esse combo</a>
+          <div class="offer-foot">Pague no Pix ou dinheiro na entrega</div>
+        </div>
+        
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       BENEFÍCIOS — Por que escolher
+  =========================================================== -->
+  <section class="benefits" id="beneficios">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Por que Só Sabor</span>
+        <h2>Sua rotina mais leve, seu bolso mais feliz.</h2>
+      </header>
+
+      <div class="benefits-grid">
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg>
+          </div>
+          <h3>Pronto em 7 minutos</h3>
+          <p>Direto do freezer pro microondas. Zero panela, zero bagunça — é só esquentar e comer.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>~R$ 14 por marmita</h3>
+          <p>Mais barato que pedir no app, mais prático que cozinhar. No combo sai pelo preço justo.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"/><path d="M3 12h18"/><path d="M3 17h18"/></svg>
+          </div>
+          <h3>Variedade todo dia</h3>
+          <p>Mais de 15 sabores entre carne, frango, porco e peixe. Um almoço diferente pra cada dia da semana.</p>
+        </article>
+
+        <article class="benefit-card">
+          <div class="benefit-icon" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-7 4 14 2-7h3"/><path d="M17 12h4"/></svg>
+          </div>
+          <h3>Comida caseira de verdade</h3>
+          <p>Feita com tempero de gente que cozinha. Arroz soltinho, carne bem passada, feijoada no ponto.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       COMBOS PRONTOS
+  =========================================================== -->
+  <section class="combos" id="combos">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Combos</span>
+        <h2>Escolha um combo pronto ou monte o seu.</h2>
+        <p class="section-desc">Todos os combos disponíveis também com <strong>arroz integral</strong> — é só avisar nas observações do pedido.</p>
+      </header>
+
+      <div class="combos-grid" id="combosGrid">
+        <!-- Cards dos combos são renderizados via JS a partir de js/data.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       MONTE SEU COMBO — escolher sabor a sabor
+  =========================================================== -->
+  <section class="builder" id="monte">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Monte seu combo</span>
+        <h2>Seu combo, do seu jeito.</h2>
+        <p class="section-desc">
+          Escolha quantas marmitas quiser de cada sabor. Ao completar <strong>5, 10, 20 ou 30 marmitas</strong>, o preço do combo é aplicado automaticamente.
+          <br>Unidade avulsa: <strong>R$ 19,00</strong> · Marmitas de peixe: <strong>+R$ 5,00 cada</strong>.
+        </p>
+      </header>
+
+      <!-- Barra de progresso do combo -->
+      <div class="builder-progress" id="builderProgress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-marker" style="left:16.66%"><span>5</span></div>
+          <div class="progress-marker" style="left:33.33%"><span>10</span></div>
+          <div class="progress-marker" style="left:66.66%"><span>20</span></div>
+          <div class="progress-marker" style="left:100%"><span>30</span></div>
+        </div>
+        <div class="progress-info" id="progressInfo">
+          <span class="progress-count"><strong id="progressCount">0</strong> marmitas</span>
+          <span class="progress-hint" id="progressHint">Escolha pelo menos 10 para o combo</span>
+        </div>
+      </div>
+
+      <!-- Filtros por categoria -->
+      <div class="flavor-filters" role="tablist">
+        <button class="filter-btn is-active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="frango">Frango</button>
+        <button class="filter-btn" data-filter="carne">Carne</button>
+        <button class="filter-btn" data-filter="porco">Porco</button>
+        <button class="filter-btn" data-filter="peixe">Peixe <span class="peixe-tag">+R$5</span></button>
+        <button class="filter-btn" data-filter="lowcarb">Low Carb</button>
+      </div>
+
+      <!-- Grid de sabores -->
+      <div class="flavors-grid" id="flavorsGrid">
+        <!-- Cards de sabores vêm de js/data.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       FORMAS DE PAGAMENTO
+  =========================================================== -->
+  <section class="payment-info" id="pagamento">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Formas de pagamento</span>
+        <h2>Pague do jeito mais fácil pra você.</h2>
+      </header>
+
+      <div class="payment-grid">
+        <div class="payment-card payment-pix">
+          <h3>Pix / Dinheiro</h3>
+          <p>Pagamento via Pix direto no site ou dinheiro na entrega.</p>
+        </div>
+        <div class="payment-card">
+          <h3>Cartão de Crédito</h3>
+          <p>Pagamento por link seguro da Infinitepay.</p>
+        </div>
+        <div class="payment-card">
+          <h3>Cartão de Débito</h3>
+          <p>Maquininha na entrega.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       COMO FUNCIONA
+  =========================================================== -->
+  <section class="how-it-works">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Como funciona</span>
+        <h2>Do pedido ao prato em 4 passos.</h2>
+      </header>
+
+      <ol class="steps">
+        <li><span class="step-num">1</span><h4>Monte seu combo</h4><p>Escolha seus sabores favoritos no site.</p></li>
+        <li><span class="step-num">2</span><h4>Envie pelo WhatsApp</h4><p>Seu pedido chega pra gente formatado e completo.</p></li>
+        <li><span class="step-num">3</span><h4>Pague e combine</h4><p>Pix ou dinheiro. Combinamos o dia, horário e o frete.</p></li>
+        <li><span class="step-num">4</span><h4>Esquente e aproveite</h4><p>7 minutos no microondas e tá pronto.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       FOOTER
+  =========================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-badge small">
+          <span class="logo-so">Só</span>
+          <span class="logo-sabor">Sabor</span>
+        </span>
+        <p>Marmitas congeladas caseiras. Prontas em 7 minutos.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Contato</h5>
+        <p><a href="https://wa.me/5531973583783" target="_blank" rel="noopener">WhatsApp: (31) 97358-3783</a></p>
+        <p>CNPJ: 54.888.460/0001-27</p>
+      </div>
+      <div class="footer-col">
+        <h5>Atalhos</h5>
+        <p><a href="#combos">Combos</a></p>
+        <p><a href="#monte">Monte seu combo</a></p>
+        <p><a href="#pagamento">Pagamento</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© 2026 Só Sabor · Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       CARRINHO LATERAL
+  =========================================================== -->
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-head">
+      <h3>Seu pedido</h3>
+      <button class="cart-close" id="cartClose" aria-label="Fechar carrinho">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="cart-body" id="cartBody">
+      <!-- Conteúdo dinâmico -->
+    </div>
+
+    <div class="cart-foot" id="cartFoot">
+      <!-- Totais dinâmicos -->
+    </div>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- ==========================================================
+       MODAL DE CHECKOUT
+  =========================================================== -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-labelledby="checkoutTitle">
+      <button class="modal-close" data-close-modal aria-label="Fechar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+      <div class="modal-body">
+        <h2 id="checkoutTitle">Finalizar pedido</h2>
+        <p class="modal-sub">Só precisamos de alguns dados. Depois enviamos tudo pro WhatsApp da loja.</p>
+
+        <form id="checkoutForm" novalidate>
+          <div class="form-row">
+            <label for="c_nome">Nome completo *</label>
+            <input type="text" id="c_nome" name="nome" required autocomplete="name" placeholder="Seu nome">
+          </div>
+
+          <fieldset class="form-fieldset">
+            <legend>Endereço de entrega</legend>
+            <div class="form-grid-2">
+              <div class="form-row">
+                <label for="c_cep">CEP *</label>
+                <input type="text" id="c_cep" name="cep" required inputmode="numeric" placeholder="00000-000" maxlength="9">
+              </div>
+              <div class="form-row">
+                <label for="c_bairro">Bairro *</label>
+                <input type="text" id="c_bairro" name="bairro" required placeholder="Ex: Savassi">
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="c_endereco">Rua e número *</label>
+              <input type="text" id="c_endereco" name="endereco" required placeholder="Ex: Rua das Flores, 123">
+            </div>
+          </fieldset>
+
+          <fieldset class="form-fieldset">
+            <legend>Forma de pagamento *</legend>
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="pagamento" value="pix" checked>
+                <div class="po-card">
+                  <strong>Pix</strong>
+                  <small>Chave aparece após confirmar</small>
+                </div>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="pagamento" value="dinheiro">
+                <div class="po-card">
+                  <strong>Dinheiro</strong>
+                  <small>Pague na entrega</small>
+                </div>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="pagamento" value="credito">
+                <div class="po-card">
+                  <strong>Crédito <span class="po-taxa">+5%</span></strong>
+                  <small>Link seguro · acréscimo de 5%</small>
+                </div>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="pagamento" value="debito">
+                <div class="po-card">
+                  <strong>Débito <span class="po-taxa">+5%</span></strong>
+                  <small>Maquininha na entrega · acréscimo de 5%</small>
+                </div>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-row">
+            <label for="c_obs">Observações do pedido (opcional)</label>
+            <textarea id="c_obs" name="observacoes" rows="3" placeholder="Ex: quero com arroz integral, ponto de referência, horário preferencial..."></textarea>
+          </div>
+
+          <!-- Resumo do pedido -->
+          <div class="checkout-summary" id="checkoutSummary"></div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-large">
+            Confirmar pedido →
+          </button>
+          <p class="form-foot">O dia, horário e valor da entrega serão combinados no WhatsApp.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL DE PERSONALIZAR COMBO
+  =========================================================== -->
+  <div class="modal" id="customizeComboModal" aria-hidden="true">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-labelledby="customizeComboTitle" style="max-width: 600px;">
+      <button class="modal-close" data-close-modal aria-label="Fechar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+      <div class="modal-body">
+        <h2 id="customizeComboTitle" style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: var(--color-green-dark); margin-bottom: 4px;">Personalizar Combo</h2>
+        <p class="modal-sub" id="customizeComboSub">Ajuste as quantidades de cada sabor para montar seu combo do seu jeito.</p>
+        
+        <!-- Status de seleção -->
+        <div class="combo-selection-status" id="comboSelectionStatus">
+          <span class="selection-count">Selecionado: <strong id="customizeSelectedCount">0</strong> de <span id="customizeRequiredCount">0</span> marmitas</span>
+          <span class="selection-status-feedback" id="customizeSelectionFeedback">Ajuste os sabores abaixo</span>
+        </div>
+
+        <!-- Lista de sabores em formato compacto com steppers -->
+        <div class="customize-flavors-list" id="customizeFlavorsList">
+          <!-- Inserido dinamicamente via JS -->
+        </div>
+
+        <div class="customize-modal-actions">
+          <button class="btn btn-ghost" data-close-modal>Cancelar</button>
+          <button class="btn btn-primary" id="confirmCustomizeComboBtn" disabled>Confirmar e Adicionar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       MODAL PIX
+  =========================================================== -->
+  <div class="modal" id="pixModal" aria-hidden="true">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog modal-pix" role="dialog" aria-labelledby="pixTitle">
+      <button class="modal-close" data-close-modal aria-label="Fechar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+      <div class="modal-body pix-body">
+        <div class="pix-icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 22 12 12 22 2 12 12 2z"/>
+            <path d="M8 8l8 8M16 8l-8 8"/>
+          </svg>
+        </div>
+        <h2 id="pixTitle">Pagamento via Pix</h2>
+        <p class="pix-desc">Copie a chave abaixo e faça o pagamento no app do seu banco.</p>
+
+        <div class="pix-amount">
+          Valor total: <strong id="pixAmount">R$ 0,00</strong>
+        </div>
+
+        <div class="pix-details">
+          <div class="pix-detail-row">
+            <span class="pix-label">Titular</span>
+            <span class="pix-value">Agiliza Log</span>
+          </div>
+          <div class="pix-detail-row">
+            <span class="pix-label">Banco</span>
+            <span class="pix-value">Infinitepay</span>
+          </div>
+          <div class="pix-detail-row">
+            <span class="pix-label">Tipo</span>
+            <span class="pix-value">CNPJ</span>
+          </div>
+        </div>
+
+        <div class="pix-key-box">
+          <div class="pix-key-label">Chave Pix (CNPJ)</div>
+          <div class="pix-key-row">
+            <code id="pixKey">54.888.460/0001-27</code>
+            <button class="btn btn-primary btn-sm" id="copyPix">Copiar</button>
+          </div>
+        </div>
+
+        <div class="pix-steps">
+          <div class="pix-step"><span>1</span>Copie a chave acima</div>
+          <div class="pix-step"><span>2</span>Pague no app do seu banco</div>
+          <div class="pix-step"><span>3</span>Envie o comprovante pelo WhatsApp</div>
+        </div>
+
+        <button class="btn btn-whatsapp btn-block btn-large" id="pixSendWhatsapp">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.88 11.88 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 0 0-3.48-8.413Z"/></svg>
+          Enviar comprovante pelo WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       TOAST — notificações de feedback
+  =========================================================== -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <!-- ==========================================================
+       SCRIPTS — divididos por responsabilidade
+  =========================================================== -->
+  <script src="{{ url_for('static', filename='js/config.js') }}?v=4"></script>
+  <script src="{{ url_for('static', filename='js/data.js') }}?v=4"></script>
+  <script src="{{ url_for('static', filename='js/catalog.js') }}?v=4"></script>
+  <script src="{{ url_for('static', filename='js/cart.js') }}?v=4"></script>
+  <script src="{{ url_for('static', filename='js/ui.js') }}?v=4"></script>
+  <script src="{{ url_for('static', filename='js/checkout.js') }}?v=4"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}?v=4"></script>
+</body>
+</html>

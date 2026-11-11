@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso administrativo | Só Sabor</title>
+  <style>
+    :root { color-scheme: light; --green: #285430; --green-dark: #19381f; --cream: #fff9ee; --orange: #ed8a2f; --red: #a52922; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px; background: linear-gradient(135deg, #e5eddc, var(--cream)); color: #1e291f; font-family: Inter, Arial, sans-serif; }
+    main { width: min(100%, 420px); padding: 32px; border: 1px solid #d8decf; border-radius: 20px; background: rgba(255, 255, 255, .94); box-shadow: 0 24px 60px rgba(25, 56, 31, .15); }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .mark { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 50%; background: var(--green); color: #fff; font-size: 22px; }
+    h1, p { margin: 0; }
+    h1 { color: var(--green-dark); font-size: 1.5rem; }
+    .brand p { margin-top: 4px; color: #687166; font-size: .88rem; }
+    label { display: block; margin-bottom: 8px; font-size: .9rem; font-weight: 700; }
+    input { width: 100%; padding: 13px; border: 1px solid #b9c5b5; border-radius: 10px; font: inherit; }
+    input:focus { border-color: var(--green); outline: 3px solid #dcebd9; }
+    button { width: 100%; margin-top: 22px; padding: 13px; border: 0; border-radius: 10px; background: var(--green); color: #fff; cursor: pointer; font: inherit; font-weight: 800; }
+    button:hover { background: var(--green-dark); }
+    .error { margin-bottom: 18px; padding: 11px 13px; border-radius: 9px; background: #fbe9e7; color: var(--red); font-size: .9rem; }
+    .back { display: inline-block; margin-top: 20px; color: var(--green); font-size: .88rem; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <div class="mark" aria-hidden="true">🍲</div>
+      <div>
+        <h1>Só Sabor</h1>
+        <p>Painel administrativo</p>
+      </div>
+    </div>
+
+    {% if erro %}<p class="error" role="alert">{{ erro }}</p>{% endif %}
+
+    <form method="post" action="{{ url_for('admin_login_post') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="password">Senha de acesso</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+      <button type="submit">Entrar no painel</button>
+    </form>
+    <a class="back" href="{{ url_for('home') }}">← Voltar para o site</a>
+  </main>
+</body>
+</html>

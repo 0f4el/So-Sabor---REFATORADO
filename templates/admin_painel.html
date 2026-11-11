@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo | Só Sabor</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --green: #285430;
+      --green-dark: #19381f;
+      --green-light: #5f8d4e;
+      --cream: #fff9ee;
+      --orange: #ed8a2f;
+      --red: #a52922;
+      --gray-50: #fafaf9;
+      --gray-100: #f5f5f4;
+      --gray-200: #e7e5e4;
+      --gray-300: #d6d3d1;
+      --gray-400: #a8a29e;
+      --gray-500: #78716c;
+      --gray-600: #57534e;
+      --gray-700: #44403c;
+      --gray-800: #292524;
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --error-bg: #fee2e2;
+      --error-text: #991b1b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--gray-100);
+      color: var(--gray-800);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-size: 20px;
+    }
+
+    .brand-text h1 {
+      color: var(--green-dark);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .brand-text p {
+      color: var(--gray-500);
+      font-size: 0.875rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: var(--green);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--gray-700);
+      border-color: var(--gray-300);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-400);
+    }
+
+    .btn-danger {
+      background: var(--red);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #8b1f1a;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .message {
+      margin-bottom: 24px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .message-success {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid #bbf7d0;
+    }
+
+    .message-error {
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid #fecaca;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-header h2 {
+      color: var(--green-dark);
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      padding: 20px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-label {
+      color: var(--gray-500);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      color: var(--green-dark);
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: var(--gray-100);
+    }
+
+    .product-content {
+      padding: 16px;
+    }
+
+    .product-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .product-title {
+      flex: 1;
+      color: var(--gray-800);
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .badge-available {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .badge-unavailable {
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+
+    .badge-category {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .product-description {
+      margin-bottom: 12px;
+      color: var(--gray-600);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-meta {
+      margin-bottom: 16px;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .product-actions .btn {
+      flex: 1;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .modal-header h3 {
+      color: var(--green-dark);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--gray-700);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      font: inherit;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--green);
+      outline: 3px solid rgba(40, 84, 48, 0.1);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-group-inline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group-inline input[type="checkbox"] {
+      width: auto;
+    }
+
+    .image-preview {
+      margin-top: 12px;
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .image-preview.active {
+      display: block;
+    }
+
+    .modal-footer {
+      padding: 20px 24px;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .empty-state h3 {
+      margin-bottom: 8px;
+      color: var(--gray-700);
+      font-size: 1.25rem;
+    }
+
+    .empty-state p {
+      margin-bottom: 24px;
+      color: var(--gray-500);
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .header-actions {
+        flex-direction: column;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">🍲</div>
+        <div class="brand-text">
+          <h1>Só Sabor</h1>
+          <p>Painel Administrativo</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary btn-small" target="_blank">Ver Site 🔗</a>
+        <form method="post" action="{{ url_for('admin_logout') }}" style="display: inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-secondary btn-small">Sair</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    {% if sucesso %}
+    <div class="message message-success" role="alert">✓ {{ sucesso }}</div>
+    {% endif %}
+
+    {% if erro %}
+    <div class="message message-error" role="alert">⚠ {{ erro }}</div>
+    {% endif %}
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total de Marmitas</div>
+        <div class="stat-value">{{ marmitas|length }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Disponíveis</div>
+        <div class="stat-value">{{ marmitas|selectattr('disponivel')|list|length }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Indisponíveis</div>
+        <div class="stat-value">{{ marmitas|rejectattr('disponivel')|list|length }}</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2>Catálogo de Marmitas</h2>
+      <button type="button" class="btn" onclick="abrirModal()">➕ Nova Marmita</button>
+    </div>
+
+    {% if marmitas %}
+    <div class="products-grid">
+      {% for m in marmitas %}
+      <article class="product-card">
+        <img src="{{ m.to_dict()['imagem'] }}" alt="{{ m.nome }}" class="product-image" loading="lazy">
+        <div class="product-content">
+          <div class="product-header">
+            <h3 class="product-title">{{ m.nome }}</h3>
+            <span class="badge {% if m.disponivel %}badge-available{% else %}badge-unavailable{% endif %}">
+              {% if m.disponivel %}Ativo{% else %}Inativo{% endif %}
+            </span>
+          </div>
+          <p class="product-description">{{ m.descricao }}</p>
+          <div class="product-meta">
+            <span class="badge badge-category">{{ dict(frango='Frango', carne='Carne', porco='Porco', peixe='Peixe', lowcarb='Low Carb', outros='Outros')[m.categoria] }}</span>
+          </div>
+          <div class="product-actions">
+            <a href="{{ url_for('editar_marmita', marmita_id=m.id) }}" class="btn btn-secondary btn-small">✏️ Editar</a>
+            <form method="post" action="{{ url_for('excluir_marmita', marmita_id=m.id) }}" 
+                  onsubmit="return confirm('Confirma a exclusão de {{ m.nome }}?')" style="flex: 1;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-danger btn-small" style="width: 100%;">🗑️ Excluir</button>
+            </form>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🍱</div>
+      <h3>Nenhuma marmita cadastrada</h3>
+      <p>Comece adicionando sua primeira marmita ao catálogo</p>
+      <button type="button" class="btn" onclick="abrirModal()">➕ Adicionar Marmita</button>
+    </div>
+    {% endif %}
+  </main>
+
+  <div class="modal" id="modal-marmita">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{% if editar %}Editar Marmita{% else %}Nova Marmita{% endif %}</h3>
+      </div>
+      <form method="post" enctype="multipart/form-data" 
+            action="{% if editar %}{{ url_for('atualizar_marmita', marmita_id=editar.id) }}{% else %}{{ url_for('criar_marmita') }}{% endif %}">
+        <div class="modal-body">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="form-group">
+            <label for="nome">Nome da Marmita *</label>
+            <input type="text" id="nome" name="nome" maxlength="120" required 
+              value="{{ form_data.get('nome', '') if form_data else (editar.nome if editar else '') }}"
+              placeholder="Ex: Strogonoff de Frango">
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição *</label>
+            <textarea id="descricao" name="descricao" required 
+              placeholder="Descreva os ingredientes e acompanhamentos">{{ form_data.get('descricao', '') if form_data else (editar.descricao if editar else '') }}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoria *</label>
+            <select id="categoria" name="categoria" required>
+              <option value="">Selecione uma categoria</option>
+              {% set cat_atual = form_data.get('categoria', '') if form_data else (editar.categoria if editar else '') %}
+              <option value="frango" {% if cat_atual == 'frango' %}selected{% endif %}>Frango</option>
+              <option value="carne" {% if cat_atual == 'carne' %}selected{% endif %}>Carne</option>
+              <option value="porco" {% if cat_atual == 'porco' %}selected{% endif %}>Porco</option>
+              <option value="peixe" {% if cat_atual == 'peixe' %}selected{% endif %}>Peixe</option>
+              <option value="lowcarb" {% if cat_atual == 'lowcarb' %}selected{% endif %}>Low Carb</option>
+              <option value="outros" {% if cat_atual == 'outros' %}selected{% endif %}>Outros</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="imagem">Imagem da Marmita {% if not editar %}*{% endif %}</label>
+            <input type="file" id="imagem" name="imagem" accept=".jpg,.jpeg,.png,.webp,.gif"
+              {% if not editar %}required{% endif %} onchange="previewImagem(event)">
+            <small style="display: block; margin-top: 6px; color: var(--gray-500);">
+              Formatos aceitos: JPG, PNG, WEBP, GIF (máx. 5MB)
+              {% if editar %} • Deixe em branco para manter a imagem atual{% endif %}
+            </small>
+            <img id="preview" class="image-preview" alt="Preview da imagem">
+            {% if editar %}
+            <img src="{{ editar.to_dict()['imagem'] }}" alt="Imagem atual" 
+              style="margin-top: 12px; max-width: 100%; max-height: 200px; border-radius: 8px;">
+            {% endif %}
+          </div>
+
+          <div class="form-group form-group-inline">
+            <input type="checkbox" id="disponivel" name="disponivel"
+              {% if not editar or editar.disponivel %}checked{% endif %}>
+            <label for="disponivel" style="margin: 0;">Marmita disponível para venda</label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn">
+            {% if editar %}💾 Salvar Alterações{% else %}➕ Criar Marmita{% endif %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function abrirModal() {
+      document.getElementById('modal-marmita').classList.add('active');
+    }
+
+    function fecharModal() {
+      document.getElementById('modal-marmita').classList.remove('active');
+    }
+
+    function previewImagem(event) {
+      const preview = document.getElementById('preview');
+      const file = event.target.files[0];
+      
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.classList.add('active');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.classList.remove('active');
+      }
+    }
+
+    document.getElementById('modal-marmita').addEventListener('click', function(e) {
+      if (e.target === this) {
+        fecharModal();
+      }
+    });
+
+    {% if editar or form_data %}
+    abrirModal();
+    {% endif %}
+
+    setTimeout(() => {
+      document.querySelectorAll('.message').forEach(msg => {
+        msg.style.transition = 'opacity 0.3s';
+        msg.style.opacity = '0';
+        setTimeout(() => msg.remove(), 300);
+      });
+    }, 5000);
+  </script>
+</body>
+</html>

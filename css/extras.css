@@ -1,0 +1,178 @@
+/* ==========================================================
+   EXTRAS.CSS — adições (lista de sabores no combo, low carb)
+   ========================================================== */
+
+/* Lista detalhada dos sabores no card de combo */
+.combo-flavors-list {
+  margin: 8px 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+.combo-flavors-list li {
+  padding: 2px 0;
+  font-size: .82rem;
+  color: var(--text-soft);
+  position: relative;
+  padding-left: 14px;
+}
+.combo-flavors-list li::before {
+  content: '•';
+  position: absolute;
+  left: 2px;
+  color: var(--color-orange);
+  font-weight: 700;
+}
+.combo-flavors-list--hidden { display: none; }
+
+.combo-see-more {
+  margin-top: 8px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--color-orange);
+  background: transparent;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.combo-see-more:hover { color: var(--primary-hover); }
+
+/* Categoria low carb — tag verde escura */
+.flavor-category-tag.cat-lowcarb {
+  background: var(--color-green-mid);
+  color: white;
+}
+
+/* Warning low carb (pedido mínimo 20) */
+.cart-combo-progress.cart-lowcarb-warn {
+  background: #fff7e6;
+  border: 1px solid #f0c674;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.cart-combo-progress.cart-lowcarb-warn .cart-combo-progress-label {
+  color: #8a5a00;
+}
+.cart-lowcarb-hint {
+  font-size: .75rem;
+  color: #8a5a00;
+  margin-top: 6px;
+}
+
+.cart-combo-hint.is-warning,
+.builder-progress .progress-hint.is-warning {
+  color: #b8690a;
+  font-weight: 600;
+}
+
+/* ---------- MODAL DE PERSONALIZAR COMBO ---------- */
+.combo-selection-status {
+  background: var(--color-cream);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.selection-count {
+  font-size: 0.95rem;
+  color: var(--color-brown);
+  font-weight: 500;
+}
+.selection-count strong {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--color-orange);
+}
+.selection-status-feedback {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  transition: all var(--t-fast);
+}
+.selection-status-feedback.is-complete {
+  background: #e6f7ed;
+  color: var(--color-green-mid);
+  border-color: #c2eada;
+}
+.selection-status-feedback.is-warning {
+  background: #fff2f0;
+  color: var(--color-red);
+  border-color: #ffd8d3;
+}
+
+.customize-flavors-list {
+  max-height: 42vh;
+  overflow-y: auto;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  padding: 4px;
+  background: white;
+  margin-bottom: 20px;
+}
+.customize-flavor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid var(--border-soft);
+  gap: 16px;
+}
+.customize-flavor-row:last-child {
+  border-bottom: none;
+}
+.customize-flavor-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.customize-flavor-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.customize-flavor-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-green-dark);
+}
+.customize-flavor-desc {
+  font-size: 0.76rem;
+  color: var(--text-soft);
+  line-height: 1.3;
+}
+.customize-flavor-row .qty-stepper {
+  flex-shrink: 0;
+}
+.customize-modal-actions {
+  display: flex;
+  gap: 12px;
+}
+.customize-modal-actions .btn {
+  flex: 1;
+}
+.customize-modal-actions .btn-primary {
+  flex: 1.5;
+}
+
+/* Estilo para botões desabilitados (bloqueados) */
+.btn:disabled,
+.btn[disabled] {
+  background: #d1d5db !important; /* cinza claro */
+  color: #9ca3af !important; /* texto cinza escuro */
+  border-color: #d1d5db !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+
